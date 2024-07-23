@@ -73,6 +73,7 @@ class NewsController extends Controller
 
             $item = new Tag();
             $item->name =$tag;
+            $item->language = $new->language;
             $item->save();
 
             $tagIds[] = $item->id;
@@ -148,6 +149,7 @@ class NewsController extends Controller
 
             $item = new Tag();
             $item->name = $tag;
+            $item->language = $new->language;
             $item->save();
 
             $tagIds[] = $item->id;

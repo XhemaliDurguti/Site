@@ -35,4 +35,8 @@ class News extends Model
     public function auther(){
         return $this->belongsTo(Admin::class);
     }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
 }
