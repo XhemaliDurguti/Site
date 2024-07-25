@@ -82,4 +82,14 @@ class HomeController extends Controller
         $comment->save();
         return redirect()->back();
     }
+
+    public function commentDestroy(Request $request){
+        //dd($request->all());
+        $comment = Comment::findOrFail($request->id);
+        if(Auth::user()->id === $comment->user_id){
+            $comment->delete();
+            return response(['status'=>'success','message'=>'Comment Delete Successfully!']);
+        }
+        return response(['status' => 'error', 'message' => 'Somthing went wrong!']);
+    }
 }

@@ -209,46 +209,48 @@
 
                                             <div class="reply">
                                                 <a href="#" class="comment-reply-link" data-toggle="modal"
-                                                    data-target="#exampleModal-{{ $comment->id }}">{{ __('Reply') }}</a>
-                                                <span>
+                                                    data-target="#exampleModal-{{ $comment->id }}">{{ __('frontend.Reply') }}</a>
+                                                <span class="delete-msg" data-id="{{ $comment->id }}">
                                                     <i class="fa fa-trash"></i>
                                                 </span>
                                             </div>
                                         </aside>
-                                        @if($comment->replay()->count() > 0)
-                                        @foreach ($comment->replay as $replay)
-                                        <ol class="children">
-                                            <li class="comment">
-                                                <aside class="comment-body">
-                                                    <div class="comment-meta">
-                                                        <div class="comment-author vcard">
-                                                            <img src="{{ asset('frontend/images/users.png') }}" class="avatar" alt="image">
-                                                            <b class="fn">{{ $replay->user->name }}</b>
-                                                            <span class="says">{{ __('says') }}:</span>
-                                                        </div>
+                                        @if ($comment->replay()->count() > 0)
+                                            @foreach ($comment->replay as $replay)
+                                                <ol class="children">
+                                                    <li class="comment">
+                                                        <aside class="comment-body">
+                                                            <div class="comment-meta">
+                                                                <div class="comment-author vcard">
+                                                                    <img src="{{ asset('frontend/images/users.png') }}"
+                                                                        class="avatar" alt="image">
+                                                                    <b class="fn">{{ $replay->user->name }}</b>
+                                                                    <span class="says">{{ __('says') }}:</span>
+                                                                </div>
 
-                                                        <div class="comment-metadata">
-                                                            <a href="#">
-                                                                <span>{{ date('M,d,Y H:i',strtotime($replay->created_at)) }}</span>
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                                <div class="comment-metadata">
+                                                                    <a href="#">
+                                                                        <span>{{ date('M,d,Y H:i', strtotime($replay->created_at)) }}</span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
 
-                                                    <div class="comment-content">
-                                                        <p>{{ $replay->comment }}</p>
-                                                    </div>
+                                                            <div class="comment-content">
+                                                                <p>{{ $replay->comment }}</p>
+                                                            </div>
 
-                                                    <div class="reply">
-                                                        <a href="#" class="comment-reply-link" data-toggle="modal"
-                                                            data-target="#exampleModal-{{ $comment->id }}">{{ __('Reply') }}</a>
-                                                        <span>
-                                                            <i class="fa fa-trash"></i>
-                                                        </span>
-                                                    </div>
-                                                </aside>
-                                            </li>
-                                        </ol>                                            
-                                        @endforeach
+                                                            <div class="reply">
+                                                                <a href="#" class="comment-reply-link"
+                                                                    data-toggle="modal"
+                                                                    data-target="#exampleModal-{{ $comment->id }}">{{ __('Reply') }}</a>
+                                                                <span class="delete-msg" data-id="{{ $replay->id }}">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </span>
+                                                            </div>
+                                                        </aside>
+                                                    </li>
+                                                </ol>
+                                            @endforeach
                                         @endif
                                     </li>
                                     <!-- Modal -->
@@ -258,7 +260,8 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">{{ __('Write Your Comment') }}</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                            {{ __('Write Your Comment') }}</h5>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
@@ -270,7 +273,8 @@
                                                             <textarea name="replay" cols="30" rows="7" placeholder="Type. . ."></textarea>
                                                             <input type="hidden" name="news_id"
                                                                 value="{{ $news->id }}" />
-                                                            <input type="hidden" name="parent_id" value="{{ $comment->id }}" />
+                                                            <input type="hidden" name="parent_id"
+                                                                value="{{ $comment->id }}" />
                                                             <button type="submit">{{ __('submit') }}</button>
                                                         </form>
                                                     </div>
@@ -310,7 +314,9 @@
                     @else
                         <div class="card my-5">
                             <div class="card-body">
-                                <h5 class="p-0">{{ __('Please') }} <a href="{{ route('login') }}">{{ __('Login') }}</a> {{ __('to comment in the post!') }}
+                                <h5 class="p-0">{{ __('Please') }} <a
+                                        href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    {{ __('to comment in the post!') }}
                                 </h5>
                             </div>
                         </div>
@@ -724,3 +730,60 @@
         </div>
     </section>
 @endsection
+@push('content')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.delete-msg').on('click', function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+               // console.log('ID:', id); // Kontrollo ID-në
+                Swal.fire({
+                    title: '{{ __('Are you sure?') }}',
+                    text: "{{ __("You won\'t be able to revert this!") }}",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '{{ __('Yes, delete it!') }}'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            method: 'DELETE',
+                            url: "{{ route('news-comment-destroy') }}",
+                            data: {
+                                id: id
+                            },
+                            success: function(data) {
+                                console.log('Response data:',
+                                    data); // Kontrollo përgjigjen
+                                if (data.status === 'success') {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        data.message,
+                                        'success'
+                                    )
+                                    window.location.reload();
+                                } else if (data.status === 'error') {
+                                    Swal.fire(
+                                        'Error!',
+                                        data.message,
+                                        'error'
+                                    )
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    }
+                });
+            });
+        })
+    </script>
+@endpush
