@@ -15,19 +15,46 @@ class HomeController extends Controller
     public function index(){
         $breakingNews  = News::where(['is_breaking_news' => 1,])
             ->ActiveEntries()->WithLocalize()->orderBy('id','DESC')->take(10)->get();
-        return view('frontend.home',compact('breakingNews'));
+
+        $heroSlider = News::with(['category'])
+            ->where('show_at_slider',1)
+            ->ActiveEntries()
+            ->withLocalize()
+            ->orderBy('id','DESC')->take(7)
+            ->get();
+
+        return view('frontend.home',compact('breakingNews','heroSlider'));
     }
 
     public function ShowNews(string $slug){
         $news = News::with(['auther','tags','comments'])->where('slug',$slug)->ActiveEntries()->WithLocalize()->first();
+        $this->countView($news);
 
         $recentNews = News::with(['category','auther'])->where('slug','!=',$news->slug)
             ->ActiveEntries()->WithLocalize()->orderBy('id','DESC')->take(4)->get();
 
         $mostCommonTags = $this->mostCommonTags();
 
-        $this->countView($news);
-        return view('frontend.news-details',compact('news', 'recentNews', 'mostCommonTags'));
+        $nextPost = News::where('id','>',$news->id)
+            ->ActiveEntries()
+            ->WithLocalize()
+            ->orderBy('id','asc')
+            ->first();
+
+        $previousPost = News::where('id', '<', $news->id)
+            ->ActiveEntries()
+            ->WithLocalize()
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $relatedPost = News::where('slug','!=',$news->slug)
+            ->where('category_id',$news->category_id)
+            ->ActiveEntries()
+            ->WithLocalize()
+            ->take(5)
+            ->get();
+
+        return view('frontend.news-details',compact('news', 'recentNews', 'mostCommonTags','nextPost','previousPost', 'relatedPost'));
     }
 
     public function countView($news){
@@ -67,6 +94,7 @@ class HomeController extends Controller
         $comment->comment = $request->comment;
         $comment->save();
 
+        toast(__('Comment add successfully!'),'success');
         return redirect()->back();
     }
 
@@ -80,6 +108,7 @@ class HomeController extends Controller
         $comment->parent_id = $request->parent_id;
         $comment->comment = $request->replay;
         $comment->save();
+        toast(__('Comment replay successfully!'), 'success');
         return redirect()->back();
     }
 
