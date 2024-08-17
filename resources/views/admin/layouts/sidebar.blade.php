@@ -28,6 +28,9 @@
                     <li><a href="#" class="nav-link">All News</a></li>
                 </ul>
             </li>
+            <li><a class="nav-link" href="{{ route('admin.social-count.index') }}"><i class="far fa-square"></i>
+                    <span>Social Count</span></a></li>
+                    
             <li><a class="nav-link" href="{{ route('admin.home-section-setting.index') }}"><i class="far fa-square"></i>
                     <span>Home Setting</span></a></li>
         </ul>
