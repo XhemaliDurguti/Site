@@ -498,9 +498,9 @@
                                                 <p>
                                                     {!! truncate($news->content, 160) !!}
                                                 </p>
-                                                <a href="{{ route('news-details', $news->slug) }}"
-                                                    class="btn btn-outline-primary mb-4 text-capitalize">
-                                                    {{ __('read more') }}</a>
+                                                <p>
+                                                    <a href="{{ route('news-details', $news->slug) }}" class="btn  text-capitalize"></a>
+                                                </p>
                                             </div>
                                         </div>
                                     @endif
