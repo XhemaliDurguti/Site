@@ -145,8 +145,15 @@ class HomeController extends Controller
                 $query->where('name','like','%'.$request->search.'%');
             })->ActiveEntries()->withLocalize()->paginate(20);
         }
-        
-        return view('frontend.news', compact('news'));
+
+        $recentNews = News::with(['category', 'auther'])
+            ->ActiveEntries()
+            ->withLocalize()
+            ->orderBy('id', 'DESC')
+            ->take(4)
+            ->get();
+
+        return view('frontend.news', compact('news', 'recentNews'));
     }
     public function countView($news)
     {
