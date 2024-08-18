@@ -37,7 +37,8 @@ Route::get('language',LanguageController::class)->name('language');
 
 /* News Details Route */
 Route::get('news-details/{slug}',[HomeController::class,'ShowNews'])->name('news-details');
-
+/* News Route */
+Route::get('news',[HomeController::class,'news'])->name('news');
 /* News Comment Routes */
 Route::post('news-comment',[HomeController::class,'handleComment'])->name('news-comment');
 Route::post('news-comment-replay',[HomeController::class,'handleReplay'])->name('news-comment-replay');

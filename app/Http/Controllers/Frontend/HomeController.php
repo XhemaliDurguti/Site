@@ -80,7 +80,7 @@ class HomeController extends Controller
             ->orderBy('views', 'DESC')
             ->take(3)
             ->get();
-            
+
         $socialCounts = SocialCount::where(['status' => 1, 'language' => getLanguage()])->get();
 
         $mostCommonTags = $this->mostCommonTags();
@@ -135,6 +135,19 @@ class HomeController extends Controller
         return view('frontend.news-details', compact('news', 'recentNews', 'mostCommonTags', 'nextPost', 'previousPost', 'relatedPost'));
     }
 
+    public function news(Request $request)
+    {   
+        if($request->has('search')){
+            $news = News::where(function($query) use ($request){
+                $query->where('title','like','%'.$request->search.'%')
+                ->orWhere('content','like','%'.$request->search.'%');
+            })->orWhereHas('category',function($query) use ($request){
+                $query->where('name','like','%'.$request->search.'%');
+            })->ActiveEntries()->withLocalize()->paginate(20);
+        }
+        
+        return view('frontend.news', compact('news'));
+    }
     public function countView($news)
     {
 
