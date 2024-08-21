@@ -33,19 +33,24 @@
                                         name="search">
                                 </div>
                                 <div class="col-lg-4">
-                                    <select>
-                                        <option value="#">Select Category</option>
+                                    <select name="category">
+                                        <option value="">{{ __('All') }}</option>
+                                        @foreach ($categories as $category )
+                                            <option {{ $category->slug === request()->category ? 'selected':'' }} value="{{ $category->slug }}">{{ $category->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="col-lg-3">
-                                    <button type="submit">search</button>
+                                    <button type="submit">{{ __('search') }}</button>
                                 </div>
                             </div>
                         </form>
                     </div>
 
                     <aside class="wrapper__list__article ">
-                        <h4 class="border_section">Category title</h4>
+                        @if(request()->has('category'))
+                            <h4 class="border_section">{{ __('Category') }}: {{ request()->category }}</h4>
+                        @endif
 
                         <div class="row">
                             @foreach ($news as $post)
@@ -193,92 +198,22 @@
                         </aside>
 
                         <aside class="wrapper__list__article">
-                            <h4 class="border_section">tags</h4>
+                            <h4 class="border_section">{{ __('tags') }}</h4>
                             <div class="blog-tags p-0">
                                 <ul class="list-inline">
-
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #property
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #sea
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #programming
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #sea
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #property
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #life style
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #technology
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #framework
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #sport
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #game
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #wfh
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #sport
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #game
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #wfh
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="#">
-                                            #framework
-                                        </a>
-                                    </li>
-
+                                    @foreach ($mostCommonTags as $tag)
+                                        <li class="list-inline-item">
+                                            <a href="#">
+                                                #{{ $tag->name }} ({{ $tag->count }})
+                                            </a>
+                                        </li>                                        
+                                    @endforeach
                                 </ul>
                             </div>
                         </aside>
 
                         <aside class="wrapper__list__article">
-                            <h4 class="border_section">newsletter</h4>
+                            <h4 class="border_section">{{ __('newsletter') }}</h4>
                             <!-- Form Subscribe -->
                             <div class="widget__form-subscribe bg__card-shadow">
                                 <h6>
@@ -308,17 +243,6 @@
                 <div class="clearfix"></div>
             </div>
 
-        </div>
-        <div class="large_add_banner mb-4">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="large_add_banner_img">
-                            <img src="images/placeholder_large.jpg" alt="adds">
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 @endsection

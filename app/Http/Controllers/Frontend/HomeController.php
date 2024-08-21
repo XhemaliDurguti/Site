@@ -9,6 +9,7 @@ use App\Models\Tag;
 use App\Models\SocialCount;
 use App\Models\Comment;
 use App\Http\Controllers\Frontend\DB;
+use App\Models\Category;
 use App\Models\HomeSectionSetting;
 use Illuminate\Support\Facades\Auth;
 
@@ -136,15 +137,24 @@ class HomeController extends Controller
     }
 
     public function news(Request $request)
-    {   
-        if($request->has('search')){
-            $news = News::where(function($query) use ($request){
-                $query->where('title','like','%'.$request->search.'%')
-                ->orWhere('content','like','%'.$request->search.'%');
-            })->orWhereHas('category',function($query) use ($request){
-                $query->where('name','like','%'.$request->search.'%');
-            })->ActiveEntries()->withLocalize()->paginate(20);
-        }
+    {
+        $news = News::query();
+
+        $news->when($request->has('search') && !empty($request->category), function ($query) use ($request) {
+            $query->where(function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->search . '%')
+                    ->orWhere('content', 'like', '%' . $request->search . '%');
+            })->orWhereHas('category', function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->search . '%');
+            });
+        });
+
+        $news->when($request->has('category'), function ($query) use ($request) {
+            $query->whereHas('category', function ($query) use ($request) {
+                $query->where('slug', $request->category);
+            });
+        });
+        $news =  $news->ActiveEntries()->withLocalize()->paginate(20);
 
         $recentNews = News::with(['category', 'auther'])
             ->ActiveEntries()
@@ -153,7 +163,11 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
-        return view('frontend.news', compact('news', 'recentNews'));
+        $categories = Category::where(['status' => 1, 'language' => getLanguage()])->get();
+
+        $mostCommonTags = $this->mostCommonTags();
+
+        return view('frontend.news', compact('news', 'recentNews', 'categories','mostCommonTags'));
     }
     public function countView($news)
     {
