@@ -35,6 +35,8 @@
                     <span>Advertisement</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.language.index') }}"><i class="far fa-square"></i>
                     <span>Language</span></a></li>
+            <li><a class="nav-link" href="{{ route('admin.subscribers.index') }}"><i class="far fa-square"></i>
+                    <span>Subscribers</span></a></li>
         </ul>
 
 

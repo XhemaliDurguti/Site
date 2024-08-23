@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\SocialCountController;
+use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Models\HomeSectionSetting;
 use Illuminate\Support\Facades\Route;
@@ -54,4 +55,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
 
     /* Ad route */
     Route::resource('ad',AdController::class);
+    /* Subscriber Routes */
+    Route::resource('subscribers',SubscriberController::class);
 });
