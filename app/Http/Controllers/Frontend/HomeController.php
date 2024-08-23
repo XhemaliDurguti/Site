@@ -12,6 +12,7 @@ use App\Http\Controllers\Frontend\DB;
 use App\Models\Category;
 use App\Models\Ad;
 use App\Models\HomeSectionSetting;
+use App\Models\Subscriber;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -243,5 +244,20 @@ class HomeController extends Controller
             return response(['status' => 'success', 'message' => 'Comment Delete Successfully!']);
         }
         return response(['status' => 'error', 'message' => 'Somthing went wrong!']);
+    }
+
+    public function SubscribeNewsletter(Request $request) {
+        $request->validate([
+            'email'=>['required','email','max:255','unique:subscribers,email'],
+            [
+                'email.unique'=>__('Email is alerdy subscribes')
+            ]
+        ]);
+
+        $subscriber = new Subscriber();
+        $subscriber->email = $request->email;
+        $subscriber->save();
+
+        return response(['status'=>'success','message'=>__('Subscribed successfully!')]);
     }
 }

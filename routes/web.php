@@ -42,5 +42,7 @@ Route::get('news',[HomeController::class,'news'])->name('news');
 /* News Comment Routes */
 Route::post('news-comment',[HomeController::class,'handleComment'])->name('news-comment');
 Route::post('news-comment-replay',[HomeController::class,'handleReplay'])->name('news-comment-replay');
-
 Route::delete('news-comment-destroy', [HomeController::class, 'commentDestroy'])->name('news-comment-destroy');
+
+/* NewsLetter Routes */
+Route::post('subscribe-newsletter',[HomeController::class,'SubscribeNewsletter'])->name('subscribe-newsletter');
