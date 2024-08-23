@@ -370,11 +370,13 @@
                         </div>
                     </aside>
                     @if ($ad->home_middle_ad_status == 1)
-                        <div class="small_add_banner">
-                            <div class="small_add_banner_img">
-                                <img src="{{ asset($ad->home_middle_ad) }}" alt="adds">
+                        <a href="{{ $ad->home_middle_ad_url }}">
+                            <div class="small_add_banner">
+                                <div class="small_add_banner_img">
+                                    <img src="{{ asset($ad->home_middle_ad) }}" alt="adds">
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     @endif
                     <aside class="wrapper__list__article mt-5">
                         <h4 class="border_section">{{ @$categorySectionFour->first()->category->name }}</h4>
@@ -568,7 +570,7 @@
                         @if ($ad->side_bar_ad_status == 1)
                             <aside class="wrapper__list__article">
                                 <h4 class="border_section">{{ __('Advertise') }}</h4>
-                                <a href="#">
+                                <a href="{{ $ad->side_bar_ad_url }}">
                                     <figure>
                                         <img src="{{ asset($ad->side_bar_ad) }}" alt="" class="img-fluid">
                                     </figure>
