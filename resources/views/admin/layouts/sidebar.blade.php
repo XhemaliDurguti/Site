@@ -13,7 +13,7 @@
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
             <li class="active">
-                <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                <a href="{{ route('admin.dashboard')}}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
             </li>
             <li class="menu-header">Starter</li>
             <li><a class="nav-link" href="{{ route('admin.category.index') }}"><i class="far fa-square"></i>
@@ -37,13 +37,14 @@
                     <span>Language</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.subscribers.index') }}"><i class="far fa-square"></i>
                     <span>Subscribers</span></a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i><span>Footer Setting</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('admin.social-link.index') }}" class="nav-link">Social Links</a></li>
+                    <li><a href="{{ route('admin.footer-info.index') }}" class="nav-link">Footer Info</a></li>
+                    <li><a href="#" class="nav-link">All News</a></li>
+                </ul>
+            </li>
         </ul>
-
-
-        <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-            <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-                <i class="fas fa-rocket"></i> Documentation
-            </a>
-        </div>
     </aside>
 </div>

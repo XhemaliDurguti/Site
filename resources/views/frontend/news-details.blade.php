@@ -21,7 +21,7 @@
                                 <i class="fa fa-home"></i> {{ __('Home') }}</a>
                         </li>
                         <li class="breadcrumbs__item">
-                            <a href="javascript:;" class="breadcrumbs__url">{{ __('News') }}</a>
+                            <a href="javascript:;" class="breadcrumbs__url">{{ $news->category->name }}</a>
                         </li>
                     </ul>
                     <!-- end breadcrumb -->
@@ -149,8 +149,8 @@
                                 <div class="wrap__profile-author-detail-name">{{ __('author') }}</div>
                                 <h4>{{ $news->auther->name }}</h4>
                                 <p>{{ __('Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis laboriosam ad
-                                                                                                    beatae itaque ea non
-                                                                                                    placeat officia ipsum praesentium! Ullam?') }}
+                                                                                                                                                                    beatae itaque ea non
+                                                                                                                                                                    placeat officia ipsum praesentium! Ullam?') }}
                                 </p>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
@@ -519,49 +519,25 @@
 
                     <!-- social media -->
                     <aside class="wrapper__list__article">
-                        <h4 class="border_section">stay conected</h4>
+                        <h4 class="border_section">{{ __('stay conected') }}</h4>
                         <!-- widget Social media -->
                         <div class="wrap__social__media">
-                            <a href="#" target="_blank">
-                                <div class="social__media__widget facebook">
-                                    <span class="social__media__widget-icon">
-                                        <i class="fa fa-facebook"></i>
-                                    </span>
-                                    <span class="social__media__widget-counter">
-                                        19,243 fans
-                                    </span>
-                                    <span class="social__media__widget-name">
-                                        like
-                                    </span>
-                                </div>
-                            </a>
-                            <a href="#" target="_blank">
-                                <div class="social__media__widget twitter">
-                                    <span class="social__media__widget-icon">
-                                        <i class="fa fa-twitter"></i>
-                                    </span>
-                                    <span class="social__media__widget-counter">
-                                        2.076 followers
-                                    </span>
-                                    <span class="social__media__widget-name">
-                                        follow
-                                    </span>
-                                </div>
-                            </a>
-                            <a href="#" target="_blank">
-                                <div class="social__media__widget youtube">
-                                    <span class="social__media__widget-icon">
-                                        <i class="fa fa-youtube"></i>
-                                    </span>
-                                    <span class="social__media__widget-counter">
-                                        15,200 followers
-                                    </span>
-                                    <span class="social__media__widget-name">
-                                        subscribe
-                                    </span>
-                                </div>
-                            </a>
-
+                            @foreach ($socialCounts as $socialCount)
+                                <a href="{{ $socialCount->url }}" target="_blank">
+                                    <div class="social__media__widget mt-2"
+                                        style="background-color: {{ $socialCount->color }}">
+                                        <span class="social__media__widget-icon">
+                                            <i class="{{ $socialCount->icon }} m-2"></i>
+                                        </span>
+                                        <span class="social__media__widget-counter">
+                                            {{ $socialCount->fan_count }} {{ $socialCount->fan_type }}
+                                        </span>
+                                        <span class="social__media__widget-name">
+                                            {{ $socialCount->button_text }}
+                                        </span>
+                                    </div>
+                                </a>
+                            @endforeach
                         </div>
                     </aside>
                     <!-- End social media -->
@@ -581,19 +557,23 @@
                         </div>
                     </aside>
                     <aside class="wrapper__list__article">
-                        <h4 class="border_section">newsletter</h4>
+                        <h4 class="border_section">{{ __('newsletter') }}</h4>
                         <!-- Form Subscribe -->
                         <div class="widget__form-subscribe bg__card-shadow">
                             <h6>
-                                The most important world news and events of the day.
+                                {{ __('The most important world news and events of the day') }}.
                             </h6>
-                            <p><small>Get magzrenvi daily newsletter on your inbox.</small></p>
-                            <div class="input-group ">
-                                <input type="text" class="form-control" placeholder="Your email address">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">sign up</button>
+                            <p><small>{{ __('Get magzrenvi daily newsletter on your inbox') }}.</small></p>
+                            <form action="" class="newsletter-form">
+                                <div class="input-group ">
+                                    <input type="text" class="form-control" name="email"
+                                        placeholder="Your email address">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary newsletter-button"
+                                            type="submit">{{ __('sign up') }}</button>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </aside>
                     @if ($ad->side_bar_ad_status == 1)

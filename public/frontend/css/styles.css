@@ -18007,4 +18007,10 @@ body.offcanvas-active {
 .pagination .page-item > a{
     text-align: center;
 }
+.btn-social {
+    background-color: #fff  !important;
+}
+.btn-social > i {
+    color:var(--colorPrimary);
+}
 /*  */

@@ -7,14 +7,11 @@
                     <!-- Breadcrumb -->
                     <ul class="breadcrumbs bg-light mb-4">
                         <li class="breadcrumbs__item">
-                            <a href="index.html" class="breadcrumbs__url">
+                            <a href="{{ url('/') }}" class="breadcrumbs__url">
                                 <i class="fa fa-home"></i> Home</a>
                         </li>
                         <li class="breadcrumbs__item">
-                            <a href="index.html" class="breadcrumbs__url">News</a>
-                        </li>
-                        <li class="breadcrumbs__item breadcrumbs__item--current">
-                            World
+                            <a href="javascript:;" class="breadcrumbs__url"></a>
                         </li>
                     </ul>
                 </div>
@@ -111,7 +108,7 @@
                 <div class="col-md-4">
                     <div class="sidebar-sticky">
                         <aside class="wrapper__list__article ">
-                            <h4 class="border_section">Sidebar</h4>
+                            <h4 class="border_section">{{ __('Sidebar') }}</h4>
                             <div class="wrapper__list__article-small">
                                 @foreach ($recentNews as $new)
                                     @if ($loop->index < 2)
@@ -219,15 +216,19 @@
                             <!-- Form Subscribe -->
                             <div class="widget__form-subscribe bg__card-shadow">
                                 <h6>
-                                    The most important world news and events of the day.
+                                    {{ __('The most important world news and events of the day') }}.
                                 </h6>
-                                <p><small>Get magzrenvi daily newsletter on your inbox.</small></p>
-                                <div class="input-group ">
-                                    <input type="text" class="form-control" placeholder="Your email address">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">sign up</button>
+                                <p><small>{{ __('Get magzrenvi daily newsletter on your inbox') }}.</small></p>
+                                <form action="" class="newsletter-form">
+                                    <div class="input-group ">
+                                        <input type="text" class="form-control" name="email"
+                                            placeholder="Your email address">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary newsletter-button"
+                                                type="submit">{{ __('sign up') }}</button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </aside>
                         @if ($ad->side_bar_ad_status == 1)
