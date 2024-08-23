@@ -10,6 +10,7 @@ use App\Models\SocialCount;
 use App\Models\Comment;
 use App\Http\Controllers\Frontend\DB;
 use App\Models\Category;
+use App\Models\Ad;
 use App\Models\HomeSectionSetting;
 use Illuminate\Support\Facades\Auth;
 
@@ -86,6 +87,8 @@ class HomeController extends Controller
 
         $mostCommonTags = $this->mostCommonTags();
 
+        $ad = Ad::first();
+
         return view(
             'frontend.home',
             compact(
@@ -100,6 +103,7 @@ class HomeController extends Controller
                 'mostViewedPosts',
                 'socialCounts',
                 'mostCommonTags',
+                'ad'
             )
         );
     }
@@ -133,7 +137,8 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        return view('frontend.news-details', compact('news', 'recentNews', 'mostCommonTags', 'nextPost', 'previousPost', 'relatedPost'));
+        $ad = Ad::first();
+        return view('frontend.news-details', compact('news', 'recentNews', 'mostCommonTags', 'nextPost', 'previousPost', 'relatedPost','ad'));
     }
 
     public function news(Request $request)
@@ -167,7 +172,8 @@ class HomeController extends Controller
 
         $mostCommonTags = $this->mostCommonTags();
 
-        return view('frontend.news', compact('news', 'recentNews', 'categories','mostCommonTags'));
+        $ad = Ad::first();
+        return view('frontend.news', compact('news', 'recentNews', 'categories','mostCommonTags','ad'));
     }
     public function countView($news)
     {

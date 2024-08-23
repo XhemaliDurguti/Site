@@ -35,8 +35,9 @@
                                 <div class="col-lg-4">
                                     <select name="category">
                                         <option value="">{{ __('All') }}</option>
-                                        @foreach ($categories as $category )
-                                            <option {{ $category->slug === request()->category ? 'selected':'' }} value="{{ $category->slug }}">{{ $category->name }}</option>
+                                        @foreach ($categories as $category)
+                                            <option {{ $category->slug === request()->category ? 'selected' : '' }}
+                                                value="{{ $category->slug }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -48,7 +49,7 @@
                     </div>
 
                     <aside class="wrapper__list__article ">
-                        @if(request()->has('category'))
+                        @if (request()->has('category'))
                             <h4 class="border_section">{{ __('Category') }}: {{ request()->category }}</h4>
                         @endif
 
@@ -188,8 +189,10 @@
                                                 <p>
                                                     {!! Str::limit(strip_tags($new->content), 100) !!}
                                                 </p>
-                                                <a href="{{ route('news-details',$new->slug) }}" class="btn btn-outline-primary mb-4 text-capitalize"> {{__('read
-                                                    more')}}</a>
+                                                <a href="{{ route('news-details', $new->slug) }}"
+                                                    class="btn btn-outline-primary mb-4 text-capitalize">
+                                                    {{ __('read
+                                                                                                        more') }}</a>
                                             </div>
                                         </div>
                                     @endif
@@ -206,7 +209,7 @@
                                             <a href="#">
                                                 #{{ $tag->name }} ({{ $tag->count }})
                                             </a>
-                                        </li>                                        
+                                        </li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -228,15 +231,16 @@
                                 </div>
                             </div>
                         </aside>
-
-                        <aside class="wrapper__list__article">
-                            <h4 class="border_section">Advertise</h4>
-                            <a href="#">
-                                <figure>
-                                    <img src="images/newsimage1.png" alt="" class="img-fluid">
-                                </figure>
-                            </a>
-                        </aside>
+                        @if ($ad->side_bar_ad_status == 1)
+                            <aside class="wrapper__list__article">
+                                <h4 class="border_section">{{ __('Advertise') }}</h4>
+                                <a href="#">
+                                    <figure>
+                                        <img src="{{ asset($ad->side_bar_ad) }}" alt="" class="img-fluid">
+                                    </figure>
+                                </a>
+                            </aside>
+                        @endif
                     </div>
                 </div>
 
@@ -244,5 +248,18 @@
             </div>
 
         </div>
+        @if ($ad->news_page_ad_status == 1)
+            <div class="large_add_banner my-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="large_add_banner_img">
+                                <img src="{{ asset($ad->news_page_ad) }}" alt="adds">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </section>
 @endsection
