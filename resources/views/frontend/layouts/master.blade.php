@@ -19,8 +19,11 @@
 </head>
 
 <body>
+    <!-- Global Variables -->
     @php
-         $socialLinks = \App\Models\SocialLink::where('status', 1)->get();
+        $socialLinks = \App\Models\SocialLink::where('status', 1)->get();
+        $footerInfo = \App\Models\FooterInfo::where('language', getLanguage())->first();
+        $footerGridOne = \App\Models\FooterGridOne::where(['status'=>1,'language'=>getLanguage()])->get();
     @endphp
     <!-- Header news -->
     @include('frontend.layouts.header')

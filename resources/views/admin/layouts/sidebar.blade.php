@@ -42,7 +42,8 @@
                 <ul class="dropdown-menu">
                     <li><a href="{{ route('admin.social-link.index') }}" class="nav-link">Social Links</a></li>
                     <li><a href="{{ route('admin.footer-info.index') }}" class="nav-link">Footer Info</a></li>
-                    <li><a href="#" class="nav-link">All News</a></li>
+                    <li><a href="{{ route('admin.footer-grid-one.index') }}" class="nav-link">Footer Grid One</a></li>
+                    <li><a href="{{ route('admin.footer-grid-two.index') }}" class="nav-link">Footer Grid Two</a></li>
                 </ul>
             </li>
         </ul>

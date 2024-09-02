@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\AdController;
 use App\Http\Controllers\Admin\AdminAuthenticationController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FooterGridOneController;
+use App\Http\Controllers\Admin\FooterGridTwoController;
 use App\Http\Controllers\Admin\FooterInfoController;
 use App\Http\Controllers\Admin\HomeSectionSettingController;
 use App\Http\Controllers\Admin\LanguageController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\Admin\SocialCountController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\SubscriberController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Models\FooterGridOne;
 use App\Models\HomeSectionSetting;
 use Illuminate\Support\Facades\Route;
 
@@ -65,4 +68,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
     
     /* Footer Info Route */
     Route::resource('footer-info',FooterInfoController::class);
+    /* Footer Grid Two Route */
+    Route::resource('footer-grid-one',FooterGridOneController::class);
+
+    /* Footer Grid Two Route */
+    Route::resource('footer-grid-two',FooterGridTwoController::class);
+    
 });
