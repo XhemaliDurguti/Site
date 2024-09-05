@@ -44,6 +44,7 @@
                     <li><a href="{{ route('admin.footer-info.index') }}" class="nav-link">Footer Info</a></li>
                     <li><a href="{{ route('admin.footer-grid-one.index') }}" class="nav-link">Footer Grid One</a></li>
                     <li><a href="{{ route('admin.footer-grid-two.index') }}" class="nav-link">Footer Grid Two</a></li>
+                    <li><a href="{{ route('admin.footer-grid-three.index') }}" class="nav-link">Footer Grid Three</a></li>
                 </ul>
             </li>
         </ul>
