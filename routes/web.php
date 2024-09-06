@@ -46,3 +46,6 @@ Route::delete('news-comment-destroy', [HomeController::class, 'commentDestroy'])
 
 /* NewsLetter Routes */
 Route::post('subscribe-newsletter',[HomeController::class,'SubscribeNewsletter'])->name('subscribe-newsletter');
+
+/* About Page Route*/
+Route::get('about',[HomeController::class,'about'])->name('about');

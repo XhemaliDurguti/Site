@@ -27,6 +27,17 @@
                     <li><a href="#" class="nav-link">All News</a></li>
                 </ul>
             </li>
+
+            <li class="dropdown">
+                <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i><span>Pages</span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ route('admin.about.index') }}" class="nav-link">About Pages</a></li>
+                    <li><a href="#" class="nav-link">Home Setting</a></li>
+                    <li><a href="#" class="nav-link">All News</a></li>
+                </ul>
+            </li>
+
+
             <li><a class="nav-link" href="{{ route('admin.social-count.index') }}"><i class="far fa-square"></i>
                     <span>Social Count</span></a></li>
             <li><a class="nav-link" href="{{ route('admin.home-section-setting.index') }}"><i class="far fa-square"></i>

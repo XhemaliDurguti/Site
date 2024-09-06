@@ -9,6 +9,7 @@ use App\Models\Tag;
 use App\Models\SocialCount;
 use App\Models\Comment;
 use App\Http\Controllers\Frontend\DB;
+use App\Models\About;
 use App\Models\Category;
 use App\Models\Ad;
 use App\Models\HomeSectionSetting;
@@ -260,5 +261,10 @@ class HomeController extends Controller
         $subscriber->save();
 
         return response(['status'=>'success','message'=>__('Subscribed successfully!')]);
+    }
+
+    public function about(){
+        $about = About::where('language',getLanguage())->first();
+        return view('frontend.about',compact('about'));
     }
 }
