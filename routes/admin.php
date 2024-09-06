@@ -69,13 +69,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
     
     /* Footer Info Route */
     Route::resource('footer-info',FooterInfoController::class);
-    /* Footer Grid Two Route */
+    /* Footer Grid One Route */
+    Route::post('footer-grid-one-title',[FooterGridOneController::class,'handleTitle'])->name('footer-grid-one-title');
     Route::resource('footer-grid-one',FooterGridOneController::class);
 
     /* Footer Grid Two Route */
+    Route::post('footer-grid-two-title', [FooterGridTwoController::class, 'handleTitle'])->name('footer-grid-two-title');
     Route::resource('footer-grid-two',FooterGridTwoController::class);
 
     /* Footer Grid Three Route */
+    Route::post('footer-grid-three-title', [FooterGridThreeController::class, 'handleTitle'])->name('footer-grid-three-title');
     Route::resource('footer-grid-three', FooterGridThreeController::class);
     
 });

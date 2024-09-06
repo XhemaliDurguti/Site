@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FooterGridOneSaveRequest;
 use App\Models\FooterGridOne;
+use App\Models\FooterTitle;
 use Illuminate\Http\Request;
 use App\Models\Language;
 
@@ -14,9 +15,9 @@ class FooterGridOneController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         $languages = Language::all();
-        return view('admin.footer-grid-one.index',compact('languages'));
+        return view('admin.footer-grid-one.index', compact('languages'));
     }
 
     /**
@@ -25,7 +26,7 @@ class FooterGridOneController extends Controller
     public function create()
     {
         $languages = Language::all();
-        return view('admin.footer-grid-one.create',compact('languages'));
+        return view('admin.footer-grid-one.create', compact('languages'));
     }
 
     /**
@@ -34,13 +35,13 @@ class FooterGridOneController extends Controller
     public function store(FooterGridOneSaveRequest $request)
     {
         $footer = new FooterGridOne();
-        $footer->language= $request->language;
+        $footer->language = $request->language;
         $footer->name = $request->name;
         $footer->url = $request->url;
         $footer->status = $request->status;
         $footer->save();
 
-        toast(__('Created Successfully!'),'success');
+        toast(__('Created Successfully!'), 'success');
 
         return redirect()->route('admin.footer-grid-one.index');
     }
@@ -52,11 +53,11 @@ class FooterGridOneController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
-    {   
+    {
         $footer = FooterGridOne::findOrFail($id);
         $languages = Language::all();
 
-        return view('admin.footer-grid-one.edit',compact('footer','languages'));
+        return view('admin.footer-grid-one.edit', compact('footer', 'languages'));
     }
 
     /**
@@ -64,7 +65,7 @@ class FooterGridOneController extends Controller
      */
     public function update(FooterGridOneSaveRequest $request, string $id)
     {
-        $footer =FooterGridOne::findOrFail($id);
+        $footer = FooterGridOne::findOrFail($id);
         $footer->language = $request->language;
         $footer->name = $request->name;
         $footer->url = $request->url;
@@ -83,6 +84,27 @@ class FooterGridOneController extends Controller
     {
         FooterGridOne::findOrFail($id)->delete();
 
-        return response(['status'=>'success','message'=>__('Deleted Successfully!')]);
+        return response(['status' => 'success', 'message' => __('Deleted Successfully!')]);
+    }
+
+    public function handleTitle(Request $request)
+    {
+        $request->validate([
+            'title' => ['required', 'max:255']
+        ]);
+
+        FooterTitle::updateOrCreate(
+            [
+                'key' => 'grid_one_title',
+                'language' => $request->language
+            ],
+            [
+                'value' => $request->title
+            ]
+        );
+
+        toast(__('Updates Successfully!'), 'success');
+
+        return redirect()->back();
     }
 }
