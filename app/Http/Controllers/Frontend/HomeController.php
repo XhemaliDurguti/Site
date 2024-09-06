@@ -12,9 +12,13 @@ use App\Http\Controllers\Frontend\DB;
 use App\Models\About;
 use App\Models\Category;
 use App\Models\Ad;
+use App\Models\Contact;
+use App\Mail\ContactMail;
 use App\Models\HomeSectionSetting;
+use App\Models\ReciveMail;
 use App\Models\Subscriber;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -266,5 +270,43 @@ class HomeController extends Controller
     public function about(){
         $about = About::where('language',getLanguage())->first();
         return view('frontend.about',compact('about'));
+    }
+
+    public function contact(){
+        $contact = Contact::where('language',getLanguage())->first();
+        return view('frontend.contact',compact('contact'));
+    }
+
+    public function handleContactForm(Request $request) {
+        
+        $request->validate(
+            [
+                'email' => ['required', 'email', 'max:255'],
+                'subject' =>['required','max:255'],
+                'message' =>['required','max:500']
+            ]
+        );
+        try{
+            $toMail = Contact::where('language', 'en')->first();
+
+            Mail::to($toMail->email)->send(new ContactMail($request->subject, $request->message, $request->email));
+
+            /* Store Mail */
+
+            $mail = new ReciveMail();
+            $mail->email = $request->email;
+            $mail->subject = $request->subject;
+            $mail->message = $request->message;
+            $mail->save();
+
+
+        }catch(\Exception $e){
+            toast(__($e->getMessage()));
+        }
+
+        toast(__('Message sent successfully!'),'success');
+
+        return redirect()->back();
+        
     }
 }
