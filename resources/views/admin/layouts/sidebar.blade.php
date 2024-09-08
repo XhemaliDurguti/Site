@@ -58,15 +58,15 @@
                         class="far fa-square"></i>
                     <span>{{ __('Home Setting') }}</span></a>
             </li>
-            <li class="{{ setSidebarActive(['admin.ad.index']) }}">
+            <li class="{{ setSidebarActive(['admin.ad.*']) }}">
                 <a class="nav-link" href="{{ route('admin.ad.index') }}"><i class="far fa-square"></i>
                     <span>{{ __('Advertisement') }}</span></a>
             </li>
-            <li class="{{ setSidebarActive(['admin.language.index']) }}">
+            <li class="{{ setSidebarActive(['admin.language.*']) }}">
                 <a class="nav-link" href="{{ route('admin.language.index') }}"><i class="far fa-square"></i>
                     <span>{{ __('Language') }}</span></a>
             </li>
-            <li class="{{ setSidebarActive(['admin.subscribers.index']) }}">
+            <li class="{{ setSidebarActive(['admin.subscribers.*']) }}">
                 <a class="nav-link" href="{{ route('admin.subscribers.index') }}"><i class="far fa-square"></i>
                     <span>{{ __('Subscribers') }}</span></a>
             </li>
@@ -80,6 +80,10 @@
                     <li class="{{ setSidebarActive(['admin.footer-grid-three.*']) }}"><a href="{{ route('admin.footer-grid-three.index') }}" class="nav-link">{{ __('Footer Grid Three')}}</a>
                     </li>
                 </ul>
+            </li>
+            <li class="{{ setSidebarActive(['admin.setting.*']) }}">
+                <a class="nav-link" href="{{ route('admin.setting.index') }}"><i class="far fa-square"></i>
+                    <span>{{ __('Settings') }}</span></a>
             </li>
         </ul>
     </aside>

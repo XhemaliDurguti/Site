@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\HomeSectionSettingController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SocialCountController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\SubscriberController;
@@ -96,4 +97,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
     /* Contact Message Page Wiew */
     Route::get('contact-message',[ContactMessageController::class,'index'])->name('contact-messages.index');
     Route::post('contact-send-replay',[ContactMessageController::class,'sendReplay'])->name('contact.send-replay');
+    
+    /** Setting routes */
+    Route::get('setting',[SettingController::class,'index'])->name('setting.index');
+    Route::put('general-setting',[SettingController::class,'updateGeneralSetting'])->name('general-setting.update');
+    Route::put('seo-setting', [SettingController::class, 'updateSeoSetting'])->name('seo-setting.update');
 });
