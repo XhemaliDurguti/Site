@@ -1,6 +1,5 @@
 @php
     $languages = \App\Models\Language::where('status', 1)->get();
-   
 @endphp
 
 <header class="bg-light">
@@ -10,7 +9,6 @@
             <div class="row">
                 <div class="col-sm-6 col-md-8">
                     <div class="topbar-left topbar-right d-flex">
-
                         <ul class="topbar-sosmed p-0">
                             @foreach ($socialLinks as $link)
                                 <li class="text-center">
@@ -59,7 +57,7 @@
                 </div>
                 <figure class="mb-0 mx-auto">
                     <a href="index.html">
-                        <img src="images/logo1.png" alt="" class="img-fluid logo">
+                        <img src="{{ asset($setting['site_logo']) }}" alt="" class="img-fluid logo">
                     </a>
                 </figure>
 

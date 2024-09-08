@@ -346,7 +346,7 @@ ol,
 ul,
 dl {
     margin-top: 0;
-    margin-bottom: 1rem !important;
+    margin-bottom: 1rem;
 }
 
 ol ol,
@@ -16572,11 +16572,11 @@ body.offcanvas-active {
 }
 
 .bg__footer {
-    background-color: #1b1c26
+    background-color: var(--colorPrimary);
 }
 
 .bg__footer-dark {
-    background-color: #055bc4;
+    background-color: var(--colorPrimary);
 }
 
 .border-top-5 {
