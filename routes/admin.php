@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\AdController;
 use App\Http\Controllers\Admin\AdminAuthenticationController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ContactMessageController;
@@ -15,6 +16,9 @@ use App\Http\Controllers\Admin\HomeSectionSettingController;
 use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\RolePermisionController;
+use App\Http\Controllers\Admin\RolePermissionController;
+use App\Http\Controllers\Admin\RoleUserController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SocialCountController;
 use App\Http\Controllers\Admin\SocialLinkController;
@@ -103,4 +107,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
     Route::put('general-setting',[SettingController::class,'updateGeneralSetting'])->name('general-setting.update');
     Route::put('seo-setting', [SettingController::class, 'updateSeoSetting'])->name('seo-setting.update');
     Route::put('appearance-setting', [SettingController::class, 'updateAppearanceSeting'])->name('appearance-setting.update');
+
+    /** Role Permission */
+    Route::get('role',[RolePermissionController::class,'index'])->name('role.index');
+    Route::get('role/create', [RolePermissionController::class, 'create'])->name('role.create');
+    Route::post('role/create',[RolePermissionController::class,'store'])->name('role.store');
+    Route::get('role/{id}/edit',[RolePermissionController::class,'edit'])->name('role.edit'); 
+    Route::put('role/{id}/edit',[RolePermissionController::class,'update'])->name('role.update');
+    Route::delete('role/{id}/destroy', [RolePermissionController::class, 'destroy'])->name('role.destroy');
+// 
+    /** Admin User Routes */
+    Route::resource('role-users',RoleUserController::class);
+
+
 });
