@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class SubscriberController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:subscriber index,admin'])->only(['index']);
+        $this->middleware(['permission:subscriber create,admin'])->only(['create', 'store']);
+        $this->middleware(['permission:subscriber update,admin'])->only(['edit', 'update']);
+        $this->middleware(['permission:subscriber delete,admin'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      */

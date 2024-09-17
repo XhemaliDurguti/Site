@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:contact index,admin'])->only('index');
+        $this->middleware(['permission:contact update,admin'])->only(['edit', 'update']);
+    }
+
     public function index(){
         $languages = Language::all();
         return view('admin.contact-page.index',compact('languages'));

@@ -15,14 +15,18 @@ class SettingController extends Controller
 {
     use FileUploadTrait;
 
-    public function index()
+    public function __construct()
     {
+        $this->middleware(['permission:setting index,admin'])->only(['index']);
+        $this->middleware(['permission:setting update,admin'])->only(['updateGeneralSetting', 'updateSeoSetting', 'updateAppearanceSeting']);
+    }
+
+    public function index(){
         $languages = Language::all();
         return view('admin.setting.index', compact('languages'));
     }
 
-    public function updateGeneralSetting(AdminGeneralSettingUpdateRequest $request): RedirectResponse
-    {
+    public function updateGeneralSetting(AdminGeneralSettingUpdateRequest $request): RedirectResponse{
 
         $logoPath = $this->handleFileUpload($request, 'site_logo');
         $faviconPath = $this->handleFileUpload($request, 'site_favicon');
@@ -51,8 +55,7 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
-    function updateSeoSetting(AdminSeoSettingUpdateRequest $request): RedirectResponse
-    {
+    function updateSeoSetting(AdminSeoSettingUpdateRequest $request): RedirectResponse{
         Setting::updateOrCreate(
             ['key' => 'site_seo_title'],
             ['value' => $request->site_seo_title]
@@ -76,8 +79,7 @@ class SettingController extends Controller
 
         return redirect()->back();
     }
-    function updateAppearanceSeting(Request $request): RedirectResponse
-    {
+    function updateAppearanceSeting(Request $request): RedirectResponse{
         $request->validate(
             [
                 'site_color' => ['required', 'max:200']

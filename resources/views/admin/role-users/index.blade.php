@@ -24,7 +24,7 @@
                                 </th>
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('Email') }}</th>
-                                <th>{{ __('Role') }}</th>
+                                <th>{{ __('Role') }}</th>   
                                 <th>{{ __('Action') }}</th>
                             </tr>
                         </thead>
@@ -36,10 +36,13 @@
                                     <td>{{ $admin->email }}</td>
                                     <td><span class="badge badge-primary">{{ $admin->getRoleNames()->first() }}</span></td>
                                     <td>
-                                        <a href="{{ route('admin.role-users.edit', $admin->id) }}" class="btn btn-primary"><i
-                                                class="fas fa-edit"></i></a>
-                                        <a href="{{ route('admin.role-users.destroy', $admin->id) }}"
-                                            class="btn btn-danger delete-item"><i class="fas fa-trash-alt"></i></a>
+                                        @if ($admin->getRoleNames()->first() != 'Administrator' && $admin->getRoleNames()->first() != 'Super Admin')
+                                            <a href="{{ route('admin.role-users.edit', $admin->id) }}"
+                                                class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('admin.role-users.destroy', $admin->id) }}"
+                                                class="btn btn-danger delete-item"><i class="fas fa-trash-alt"></i></a>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

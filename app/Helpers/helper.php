@@ -4,6 +4,7 @@ use App\Models\Language;
 use App\Models\Setting;
 use Illuminate\Support\Str;
 
+
 /* Format news Tags */
 
 function formatTags(array $tags): String
@@ -64,4 +65,18 @@ function setSidebarActive(array $routes): ?string{
 function getSetting($key) {
     $data = Setting::where('key',$key)->first();
     return $data->value;
+}
+
+/** check permissions */
+
+function canAccess(array $permissions){
+    $permission =  auth()->guard('admin')->user()->hasAnyPermission($permissions);
+    $superAdmin = auth()->guard('admin')->user()->hasRole('Super Admin');
+
+    if($permission || $superAdmin)
+    {
+        return true;
+    }else {
+        return false;
+    }
 }

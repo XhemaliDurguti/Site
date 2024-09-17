@@ -11,6 +11,12 @@ use App\Models\Ad;
 class AdController extends Controller
 {
     use FileUploadTrait;
+
+    public function __construct()
+    {
+        $this->middleware(['permission:advertisement index,admin'])->only(['index']);
+        $this->middleware(['permission:advertisement update,admin'])->only(['edit', 'update']);
+    }
     /**
      * Display a listing of the resource.
      */

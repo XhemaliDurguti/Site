@@ -114,6 +114,9 @@ class RoleUserController extends Controller
     public function destroy(string $id)
     {
         $user = Admin::findOrFail($id);
+        if($user->getRoleNames()->first() === 'Administrator') {
+            return response(['status' => 'error','message'=>__('Deleted Successfully')]);
+        }
         $user->delete();
 
         return response(['status'=>'success','message'=> __('Deleted Succesffully')]);
