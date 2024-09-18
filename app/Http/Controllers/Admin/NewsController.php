@@ -13,6 +13,8 @@ use App\Traits\FileUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Response;
 
 class NewsController extends Controller
 {
@@ -20,10 +22,11 @@ class NewsController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['permission:news index,admin'])->only('index','toggleNewsStatus','copyNews');
+        $this->middleware(['permission:news index,admin'])->only('index','copyNews');
         $this->middleware(['permission:news create,admin'])->only(['create', 'store']);
         $this->middleware(['permission:news update,admin'])->only(['edit', 'update']);
         $this->middleware(['permission:news delete,admin'])->only(['destroy']);
+        $this->middleware(['permission:news all-access,admin'])->only(['toggleNewsStatus']);
     }
     /**
      * Display a listing of the resource.
@@ -31,12 +34,28 @@ class NewsController extends Controller
     public function index()
     {
         $languages = Language::all();
-        return view('admin.news.index',compact('languages'));
+        return view('admin.news.index', compact('languages'));
+    }
+
+    public function pendingNews(): View
+    {
+        $languages = Language::all();
+        return view('admin.pending-news.index', compact('languages'));
+    }
+
+    public function approveNews(Request $request): Response
+    {
+        $news = News::findOrFail($request->id);
+        $news->is_approved = $request->is_approve;
+        $news->save();
+
+        return response(['status' => 'success', 'message' => __('admin.Updated Successfully')]);
     }
     /* 
         Fetch category depending on language
     */
-    public function fetchCategory(Request $request) {
+    public function fetchCategory(Request $request)
+    {
         $categories = Category::where('language', $request->lang)->get();
         return $categories;
     }
@@ -46,7 +65,7 @@ class NewsController extends Controller
     public function create()
     {
         $languages = Language::all();
-        return view('admin.news.create',compact('languages'));
+        return view('admin.news.create', compact('languages'));
     }
 
     /**
@@ -72,15 +91,16 @@ class NewsController extends Controller
         $new->show_at_slider = $request->show_at_slider == 1 ? 1 : 0;
         $new->show_at_popular = $request->show_at_popular == 1 ? 1 : 0;
         $new->status = $request->status == 1 ? 1 : 0;
+        $new->is_approved = getRole() == 'Super Admin' || checkPermission('news all-access') ? 1 : 0;
         $new->save();
 
-        $tags = explode(',',$request->tags);
+        $tags = explode(',', $request->tags);
         $tagIds = [];
 
-        foreach($tags as $tag) {
+        foreach ($tags as $tag) {
 
             $item = new Tag();
-            $item->name =$tag;
+            $item->name = $tag;
             $item->language = $new->language;
             $item->save();
 
@@ -95,23 +115,17 @@ class NewsController extends Controller
     /**
      * Change toggle status of news
      */
-    public function toggleNewsStatus(Request $request){
+    public function toggleNewsStatus(Request $request)
+    {
         try {
             $news = News::findOrFail($request->id);
             $news->{$request->name} = $request->status;
             $news->save();
 
             return response(['status' => 'success', 'message' => __('Updated success')]);
-        }catch(\Throwable $th) {
+        } catch (\Throwable $th) {
             throw $th;
-        }       
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        // 
+        }
     }
 
     /**
@@ -121,19 +135,27 @@ class NewsController extends Controller
     {
         $languages = Language::all();
         $news = News::findOrFail($id);
-        $categories = Category::where('language',$news->language)->get();
-        return view('admin.news.edit',compact('languages','news','categories'));
+        if(! canAccess(['news all-access'])){
+            if ($news->auther_id === ! auth()->guard('admin')->user()->id) {
+                return abort(404);
+            }
+        }
+        $categories = Category::where('language', $news->language)->get();
+        return view('admin.news.edit', compact('languages', 'news', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(AdminNewsUpdateRequest $request, string $id)
-    {        
+    {
         $new = News::findOrFail($id);
 
+        if($new->auther_id ===! auth()->guard('admin')->user()->id || getRole()!== 'Super Admin') {
+            return abort(404);
+        }
         $imagePath = $this->handleFileUpload($request, 'image');
-        
+
         $new->language = $request->language;
         $new->category_id = $request->category;
         $new->image = !empty($imagePath) ? $imagePath : $new->image;
@@ -177,13 +199,14 @@ class NewsController extends Controller
         $this->deleteFile($news->image);
         $news->delete();
 
-        return response(['status'=>'success','message'=> __('Deleted Successfully!')]);
+        return response(['status' => 'success', 'message' => __('Deleted Successfully!')]);
     }
 
     /*
         Copy News
     */
-    public function copyNews(string $id) {
+    public function copyNews(string $id)
+    {
         $news = News::findOrFail($id);
         $copyNews = $news->replicate();
         $copyNews->save();

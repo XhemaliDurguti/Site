@@ -25,12 +25,20 @@
             @endif
 
             @if (canAccess(['news index']))
-                <li class="dropdown {{ setSidebarActive(['admin.news.*']) }}">
+                <li class="dropdown {{ setSidebarActive(['admin.news.*', 'admin.pending.news']) }}">
                     <a href="#" class="nav-link has-dropdown"><i
                             class="far fa-file-alt"></i><span>{{ __('News') }}</span></a>
                     <ul class="dropdown-menu">
-                        <li class="{{ setSidebarActive(['admin.news.*']) }}"><a href="{{ route('admin.news.index') }}"
-                                class="nav-link">{{ __('All News') }}</a></li>
+                        <li class="{{ setSidebarActive(['admin.news.*']) }}">
+                            <a href="{{ route('admin.news.index') }}" class="nav-link">{{ __('All News') }}</a>
+                        </li>
+                        @if (!auth()->guard('admin')->user()->id || getRole()== 'Super Admin')
+                            <li class="{{ setSidebarActive(['admin.pending.news']) }}">
+                                <a href="{{ route('admin.pending.news') }}"
+                                    class="nav-link">{{ __('Pending News') }}</a>
+                            </li>
+                        @endif
+
                     </ul>
                 </li>
             @endif
@@ -146,7 +154,7 @@
                 <li class="{{ setSidebarActive(['admin.setting.*']) }}">
                     <a class="nav-link" href="{{ route('admin.setting.index') }}"><i class="far fa-square"></i>
                         <span>{{ __('Settings') }}</span></a>
-                </li>                
+                </li>
             @endif
         </ul>
     </aside>
