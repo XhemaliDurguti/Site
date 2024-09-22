@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SocialCountController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\Admin\SubscriberController;
+use App\Http\Controllers\Admin\LocalizationController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Models\FooterGridOne;
 use App\Models\HomeSectionSetting;
@@ -50,7 +51,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
     Route::resource('profile',ProfileController::class);
     /** Language Route */
     Route::resource('language',LanguageController::class);
-    
+    Route::get('/languages', [LanguageController::class, 'languages'])->name('languages');
+    // Route::get('language', [LanguageController::class, 'getLanguages'])->name('getLanguage');;
     /** Category Route */
     Route::resource('category',CategoryController::class);
 
@@ -120,6 +122,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
 // 
     /** Admin User Routes */
     Route::resource('role-users',RoleUserController::class);
-
-
+    /**Localization Routes */
+    Route::get('admin-localization',[LocalizationController::class, 'adminIndex'])->name('admin-localization.index');
+    Route::get('frontend-localization',[LocalizationController::class, 'frontendIndex'])->name('frontend-localization.index');
+    Route::post('extract-localize-string',[LocalizationController::class,'extractLocalization'])->name('extract-localize-string');
+    Route::post('update-lang-string', [LocalizationController::class, 'updateLangString'])->name('update-lang-string');
+    Route::post('translate-string',[LocalizationController::class,'translateString'])->name('translate-string');
 });

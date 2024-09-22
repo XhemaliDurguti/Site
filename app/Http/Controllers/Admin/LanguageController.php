@@ -7,7 +7,7 @@ use App\Http\Requests\AdminLanguageStoreRequest;
 use App\Http\Requests\AdminLanguageUpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Language;
-
+use Illuminate\Support\Facades\Http;
 
 class LanguageController extends Controller
 {
@@ -24,15 +24,34 @@ class LanguageController extends Controller
     public function index()
     {
         $languages = Language::all();
+
         return view('admin.language.index', compact('languages'));
     }
-
+   
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return view('admin.language.create');
+    {        
+        $response = Http::withHeaders(
+            [
+                'x-rapidapi-host' => 'microsoft-translator-text.p.rapidapi.com',
+                'x-rapidapi-key' => '46daf4d460mshc9d613e80f95a72p1df14ejsna2bd6b1d790f',
+            ]
+        )->get('https://microsoft-translator-text.p.rapidapi.com/languages?api-version=3.0');
+
+        $data = $response->json();
+        $lange = [];
+
+        if (isset($data['translation'])) {
+            foreach ($data['translation'] as $langCode => $details) {
+                $lange[] = [
+                    'name' => $details['name'],  // Emri i gjuhës
+                    'code' => $langCode          // Shkurtesa e gjuhës (langCode)
+                ];
+            }
+        }
+        return view('admin.language.create',compact('lange'));
     }
 
     /**

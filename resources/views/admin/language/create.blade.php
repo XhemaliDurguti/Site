@@ -2,7 +2,7 @@
 @section('content')
     <section class="section">
         <div class="section-header">
-            <h1>Language1</h1>
+            <h1>Language</h1>
         </div>
         <div class="card card-primary">
             <div class="card-header">
@@ -20,8 +20,8 @@
                         <label for="">Language</label>
                         <select name="lang" id="language-select" class="form-control select2">
                             <option value="">--Select--</option>
-                            @foreach(config('language') as $key=>$lang)
-                                <option value="{{ $key }}">{{ $lang['name'] }}</option>
+                            @foreach ($lange as $l )
+                                <option value="{{ $l['code'] }}">{{ $l['name'] }}</option>
                             @endforeach
                         </select>
                         @error('lang')
@@ -77,6 +77,9 @@
                 $('#slug').val(value);
                 $('#name').val(name);
             })
+
+
+
         });
     </script>
 @endpush

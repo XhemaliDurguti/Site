@@ -32,7 +32,7 @@
                         <li class="{{ setSidebarActive(['admin.news.*']) }}">
                             <a href="{{ route('admin.news.index') }}" class="nav-link">{{ __('All News') }}</a>
                         </li>
-                        @if (!auth()->guard('admin')->user()->id || getRole()== 'Super Admin')
+                        @if (!auth()->guard('admin')->user()->id || getRole() == 'Super Admin')
                             <li class="{{ setSidebarActive(['admin.pending.news']) }}">
                                 <a href="{{ route('admin.pending.news') }}"
                                     class="nav-link">{{ __('Pending News') }}</a>
@@ -156,6 +156,21 @@
                         <span>{{ __('Settings') }}</span></a>
                 </li>
             @endif
+            <li class="dropdown {{ setSidebarActive(['admin.admin-localization.index','admin.frontend-localization.index']) }}">
+                <a href="#" class="nav-link has-dropdown">
+                    <i class="far fa-file-alt"></i><span>{{ __('Localization') }}</span>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li class="{{ setSidebarActive(['admin.frontend-localization.index']) }}">
+                        <a href="{{ route('admin.frontend-localization.index') }}" class="nav-link">{{ __('Frontend Lang') }}</a>
+                    </li>
+                    <li class="{{ setSidebarActive(['admin.admin-localization.index']) }}">
+                        <a href="{{ route('admin.admin-localization.index') }}" class="nav-link">{{ __('Admin Lang') }}</a>
+                    </li>
+                    
+                </ul>
+            </li>
         </ul>
     </aside>
 </div>
