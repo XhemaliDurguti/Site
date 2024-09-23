@@ -26,34 +26,38 @@ class LocalizationController extends Controller
     }
     function extractLocalization(Request $request)
     {
-        $directory = $request->directory;
+        $directorys = explode(',',$request->directory);
         $languageCode = $request->language_code;
         $folderName = $request->file_name;
-        //__('strings')
-        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
-
+        
         $localizationStrings = [];
-
-        foreach ($files as $file) {
-            if ($file->isDir()) {
-                continue;
-            }
-            $contents = file_get_contents($file->getPathname());
-
-            preg_match_all('/_\([\'"](.+?)[\'"]\)/', $contents, $matches);
-
-            if (!empty($matches[1])) {
-                foreach ($matches[1] as $match) {
-                    $localizationStrings[$match] = $match;
+        foreach ($directorys as $directory) {
+            $directory = trim($directory);
+            $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));        
+            foreach ($files as $file) {
+                if ($file->isDir()) {
+                    continue;
+                }
+                $contents = file_get_contents($file->getPathname());
+    
+                preg_match_all('/_\([\'"](.+?)[\'"]\)/', $contents, $matches);
+    
+                if (!empty($matches[1])) {
+                    foreach ($matches[1] as $match) {
+                        $localizationStrings[$match] = $match;
+                    }
                 }
             }
         }
+        
         $phpArray = "<?php\n\nreturn " . var_export($localizationStrings, true) . ";\n";
         //Create sub folder if not exists
         if (!File::isDirectory(lang_path($languageCode))) {
             File::makeDirectory(lang_path($languageCode), 0755, true);
         }
         file_put_contents(lang_path($languageCode . '/' . $folderName . '.php'), $phpArray);
+
+        toast(__('Generated Successfully!'),'success');
         return redirect()->back();
     }
     function updateLangString(Request $request): RedirectResponse

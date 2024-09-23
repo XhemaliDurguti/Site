@@ -51,7 +51,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.','middleware'=>['admin']], fu
     Route::resource('profile',ProfileController::class);
     /** Language Route */
     Route::resource('language',LanguageController::class);
-    Route::get('/languages', [LanguageController::class, 'languages'])->name('languages');
+    // Route::get('/languages', [LanguageController::class, 'languages'])->name('languages');
     // Route::get('language', [LanguageController::class, 'getLanguages'])->name('getLanguage');;
     /** Category Route */
     Route::resource('category',CategoryController::class);

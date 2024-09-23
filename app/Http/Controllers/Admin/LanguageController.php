@@ -24,7 +24,6 @@ class LanguageController extends Controller
     public function index()
     {
         $languages = Language::all();
-
         return view('admin.language.index', compact('languages'));
     }
    
@@ -85,8 +84,27 @@ class LanguageController extends Controller
      */
     public function edit(string $id)
     {
+        
         $language = Language::findOrFail($id);
-        return view('admin.language.edit', compact('language'));
+        $response = Http::withHeaders(
+            [
+                'x-rapidapi-host' => 'microsoft-translator-text.p.rapidapi.com',
+                'x-rapidapi-key' => '46daf4d460mshc9d613e80f95a72p1df14ejsna2bd6b1d790f',
+            ]
+        )->get('https://microsoft-translator-text.p.rapidapi.com/languages?api-version=3.0');
+
+        $data = $response->json();
+        $lange = [];
+
+        if (isset($data['translation'])) {
+            foreach ($data['translation'] as $langCode => $details) {
+                $lange[] = [
+                    'name' => $details['name'],  // Emri i gjuhës
+                    'code' => $langCode          // Shkurtesa e gjuhës (langCode)
+                ];
+            }
+        }
+        return view('admin.language.edit', compact('language','lange'));
     }
 
     /**

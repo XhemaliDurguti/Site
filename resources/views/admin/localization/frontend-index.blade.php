@@ -34,7 +34,7 @@
                                             <form action="{{ route('admin.extract-localize-string') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="directory"
-                                                    value="{{ resource_path('views/frontend') }}">
+                                                    value="{{ resource_path('views/frontend') }},{{ app_path('Http/Controllers/Frontend')}},{{ resource_path('views/mail') }}">
                                                 <input type="hidden" name="language_code" value="{{ $language->lang }}">
                                                 <input type="hidden" name="file_name" value="frontend">
                                                 <button type="submit"
@@ -80,17 +80,11 @@
                                                         <button data-langcode="{{ $language->lang }}"
                                                             data-key="{{ $key }}"
                                                             data-value="{{ $value }}" data-filename="frontend"
-                                                            type="button" class="btn btn-danger modal_btn"
+                                                            type="button" class="btn btn-primary modal_btn"
                                                             data-toggle="modal" data-target="#exampleModal">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button type="button" data-langcode="{{ $language->lang }}"
-                                                            data-key="{{ $key }}"
-                                                            data-value="{{ $value }}" data-filename="frontend"
-                                                            class="btn btn-primary modal_btn" data-toggle="modal"
-                                                            data-target="#exampleModal">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
+                                                        
                                                     </td>
                                                 </tr>
                                             @endforeach

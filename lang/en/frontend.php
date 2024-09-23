@@ -56,4 +56,13 @@ return array (
   'Category' => 'Category',
   'No News Found' => 'No News Found',
   'Sidebar' => 'Sidebar',
+  'Comment add successfully!' => 'Comment add successfully!',
+  'Comment replay successfully!' => 'Comment replay successfully!',
+  'Email is alerdy subscribes' => 'Email is alerdy subscribes',
+  'Subscribed successfully!' => 'Subscribed successfully!',
+  'Message sent successfully!' => 'Message sent successfully!',
+  'Hey There' => 'Hey There',
+  'This is your login Credentials' => 'This is your login Credentials',
+  'Email' => 'Email',
+  'Password' => 'Password',
 );
