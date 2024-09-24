@@ -11,6 +11,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 
 class LocalizationController extends Controller
 {
@@ -75,7 +76,7 @@ class LocalizationController extends Controller
 
         return redirect()->back();
     }
-
+    
     function translateString(Request $request)
     {
         $langCode = $request->language_code;
@@ -109,4 +110,5 @@ class LocalizationController extends Controller
         return response(['status'=>'success',__('Translation is completed')]);
         
     }
+
 }
